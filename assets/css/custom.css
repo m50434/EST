@@ -1,0 +1,36 @@
+          .navbar-custom {
+                background-color: <?php echo $prefs[0]->navbarcolor;?>;
+            }
+            /* change the brand and text color */
+            .navbar-custom .navbar-brand,
+            .navbar-custom .navbar-text {
+                color: <?php echo $prefs[0]->textnavbarcolor;?>;
+            }
+
+            /* change the color of active or hovered links */
+            
+            .navbar-custom .nav-item.active .nav-link,
+            .navbar-custom .nav-item:hover .nav-link,
+            .navbar-custom .navbar-nav .nav-link {
+                color: <?php echo $prefs[0]->linknavbarcolor;?>;
+            }
+
+            
+            a,a:visited:hover{
+            color: #000000;
+            }
+            
+            .btn-primary, .btn-primary:hover, .btn-primary:active, .btn-primary:visited, .btn-primary:focus {
+                background-color: <?php echo $prefs[0]->navbarcolor;?> !important;
+            }
+
+            .custom-checkbox .custom-control-input:checked~.custom-control-label::before{
+                 background-color:<?php echo $prefs[0]->navbarcolor;?>;
+            }
+            
+            .dropdown-menu {
+       			 border-color:<?php echo $prefs[0]->navbarcolor;?> !important; 
+        
+    		}
+  
+     		.movecursor {cursor: move;}
