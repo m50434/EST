@@ -91,8 +91,8 @@ class Auth extends CI_Controller {
 			        $choices[$i] = array();
 			        array_push($choices[$i],$choice);
 
-			        if(sizeof($choices[$i][0]->options) != 0 ){$choices[$i][0]->options = explode(",", $choices[$i][0]->options);}
-			       
+			        //if(sizeof($choices[$i][0]->options) != 0 ){$choices[$i][0]->options = explode(",", $choices[$i][0]->options);}
+			        $choices[$i][0]->options = explode(",", $choices[$i][0]->options);
 
 			    }
 			    $previousValue = $choice;

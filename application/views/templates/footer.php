@@ -387,7 +387,9 @@
 		url: "Users/storeParentChoices",
 		data: {parent_choices: arrayJson, parent_checkboxes: $cb_string},
         error: function(res) {
-        	waitingDialog.hide();
+        	setTimeout(function () {
+    			 waitingDialog.hide();
+   			}, 1000);
             bootbox.alert({
     	        message: "Leider ist ein Fehler aufgetreten. Die Änderungen wurden nicht gespeichert.",
     	        size: 'small'
@@ -396,7 +398,9 @@
 
          },
 		success: function(res) {
-			waitingDialog.hide();
+			setTimeout(function () {
+	 			 waitingDialog.hide();
+				}, 1000);
 		    bootbox.alert({
     	        message: "Ihre Änderungen wurden gespeichert.",
     	        size: 'small'

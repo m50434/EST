@@ -53,6 +53,15 @@ Installation
 |    change in line 26 the variable $config['base_url'] to 'https://yoururl.com/est/';
 |  
 
+************
+Update
+************
+
+| 1. Logout from EST
+| 2. Copy EST.db in \assets\db
+| 3. Paste EST.db to \assests\db
+|  
+
 *******
 License
 *******
