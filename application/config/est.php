@@ -2,13 +2,13 @@
 /**
 * Name:  EST - Online
 *
-* Version: 1.1 
+* Version: 1.2 
 *
 * Author: M. Gehrke (m50434@aol.com)
 *         
 * DEFAULT LOGIN: admin password
 * PLEASE CHANGE THIS PASSWORD
-* Created:  05.03.2019
+* Created:  19.03.2019
 * Requirements: 
 * PHP:
 * PHP version 5.6 or newer is recommended.

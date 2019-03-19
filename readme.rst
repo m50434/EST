@@ -25,7 +25,8 @@ EST - Online
 Changelog and New Features
 **************************
 
--
+| 1.2: Bei den Lehrern können die Terminfelder beim Importieren nun auch leer sein.
+| 
 
 *******************
 Server Requirements

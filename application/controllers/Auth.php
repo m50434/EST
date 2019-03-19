@@ -535,9 +535,13 @@ class Auth extends CI_Controller {
 	                    
 	                    
 	                    //$userdata = explode(";", $userdata[0]);
-	                    if(isset($userdata[0]) && isset($userdata[1]) && isset($userdata[2]) && isset($userdata[3]) && is_numeric($userdata[0]) && $userdata[0]!="" && $userdata[1]!="" && $userdata[2]!="" && $userdata[3]!="" && $userdata[4]!="" && $userdata[5]!="" ){
+	                    if(isset($userdata[0]) && isset($userdata[1]) && isset($userdata[2]) && isset($userdata[3]) && is_numeric($userdata[0]) && $userdata[0]!="" && $userdata[1]!="" && $userdata[2]!="" && $userdata[3]!=""){
 	                        
 	                        if($this->EST_model->check_teacherid(intval($userdata[0]))==null){
+	                            
+	                            if($userdata[4]=="")$userdata[4]="-"; 
+	                            if($userdata[5]=="")$userdata[5]="-"; 
+	                            
 	                            $data_import .= "</br> " . $line . ". Datensatz: " . $userdata[0] . " " . $userdata[1] . " " . $userdata[2] . " " . $userdata[3]. " " . $userdata[4]. " " . $userdata[5] . " <i class=\"icon fa fa-check\"></i>";
 	                            
 	                            if($simulate!="on"){
