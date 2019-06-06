@@ -25,8 +25,8 @@ EST - Online
 Changelog and New Features
 **************************
 
-| 1.2: Bei den Lehrern k�nnen die Terminfelder beim Importieren nun auch leer sein.
-| 
+| 1.2: Bei den Lehrern k�nnen die Terminfelder beim Importieren nun auch leer sein.
+| 1.3: Es können nun die tatsächlich stattfindenden Elterngespräche sowie die Raumdaten importiert werden. Außerdem können Eltern nun ihre Gespärchstermine einsehen und diese drucken bzw. als PDF herunterladen. Für Version 1.3 muss die neue Datenbank benutzt werden, da sich hier ebenfalls Änderungen ergeben haben.
 
 *******************
 Server Requirements
@@ -55,7 +55,7 @@ Installation
 |  
 
 ************
-Update
+Update (nicht für 1.2 auf 1.3)
 ************
 
 | 1. Logout from EST

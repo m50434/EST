@@ -34,7 +34,9 @@ class Auth extends CI_Controller {
 			// set the flash data error message if there is one
 		    $this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
 			$this->data['message_parents'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message_parents');
+			$this->data['message_teachers_results'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message_teachers_results');
 			$this->data['message_teachers'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message_teachers');
+			$this->data['message_rooms'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message_rooms');
 			$this->data['message_prefs'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message_prefs');
 
 			
@@ -101,7 +103,11 @@ class Auth extends CI_Controller {
 
 			$this->data['parent_option'] =  array($this->data['prefs'][0]->option1,$this->data['prefs'][0]->option2,$this->data['prefs'][0]->option3,$this->data['prefs'][0]->option4,$this->data['prefs'][0]->option5,$this->data['prefs'][0]->option6);
 
-
+			$this->data['teachers_results'] = $this->EST_model->results(false,"teacher")->result();
+			
+			$this->data['parents_results'] = $this->EST_model->results(false,"parents")->result();
+			
+			$this->data['rooms'] = $this->EST_model->getRooms()->result();
 			
 			$userx = $this->ion_auth->user()->row();
 			$this->data['usersx'] = $userx;
@@ -174,8 +180,9 @@ class Auth extends CI_Controller {
 	    
 	    foreach($data['users'] as $data_parent){
 	        
+	        if( $data_parent->id!=-1){
 	        $data['response'] .= "</br> " . $data_parent->id . " " . $data_parent->username . " " . $data_parent->children;
-	        $deletelines++;
+	        $deletelines++;}
 	        
 	    }
 	    
@@ -184,9 +191,10 @@ class Auth extends CI_Controller {
 	        $this->EST_model->delete_users_not_admin();
 	        $this->EST_model->delete_alldata($this->tables_est['parent_options']);
 	        $this->EST_model->delete_alldata($this->tables_est['parent_choice']);
+	        $this->EST_model->delete_alldata($this->tables_est['parent_results']);
 	    }
 	    
-	    $data['response'] .= "</br><b> Es wurden " .  $deletelines . " Datensätze sowie alle möglichen Elternwahlen gelöscht! </b></br></br></br> ";
+	    $data['response'] .= "</br><b> Es wurden " .  $deletelines . " Datensätze sowie alle möglichen Elternwahlen und Elternergebnisse gelöscht! </b></br></br></br> ";
 	    
 	    
 	    $this->session->set_flashdata('message_parents', $data['response']);
@@ -235,6 +243,83 @@ class Auth extends CI_Controller {
 	    redirect('auth', 'refresh');
 	}
 	
+	
+	public function delete_teachers_results(){
+	    
+	    
+	    if (!$this->ion_auth->logged_in() || (!$this->ion_auth->is_admin() && !($this->ion_auth->user()->row()->id == $id)))
+	    {
+	        redirect('auth', 'refresh');
+	    }
+	    
+	    
+	    $data = array();
+	    $data['response'] = "";
+	    $deletelines=0;
+	    
+	    $simulate = $this->input->post('edit_simulate_teachers_results');
+	    
+	    $data['parent_results'] = $this->EST_model->results(false,"parents")->result();
+	    
+	    $data['response'] .= "<b>Folgende Datensätze werden gelöscht: </b>";
+	    
+	    foreach($data['parent_results'] as $data_teacher_result){
+	        
+	        $data['response'] .= "</br> " . $data_teacher_result->users_ID . " " . $data_teacher_result->teachers_ID . " " . $data_teacher_result->Day . " " . $data_teacher_result->Time;
+	        $deletelines++;
+	        
+	    }
+	    
+	    
+	    if($simulate!="on"){
+	        $this->EST_model->delete_alldata($this->tables_est['parent_results']);
+	    }
+	    
+	    $data['response'] .= "</br><b> Es wurden " .  $deletelines . " Datensätze gelöscht! </b></br></br></br> ";
+	    
+	    
+	    $this->session->set_flashdata('message_teachers_results', $data['response']);
+	    redirect('auth', 'refresh');
+	}
+	
+	
+	public function delete_rooms(){
+	    
+	    
+	    if (!$this->ion_auth->logged_in() || (!$this->ion_auth->is_admin() && !($this->ion_auth->user()->row()->id == $id)))
+	    {
+	        redirect('auth', 'refresh');
+	    }
+	    
+	    
+	    $data = array();
+	    $data['response'] = "";
+	    $deletelines=0;
+	    
+	    $simulate = $this->input->post('edit_simulate_rooms');
+	    
+	    $data['rooms'] = $this->EST_model->getRooms()->result();
+	    
+	    $data['response'] .= "<b>Folgende Datensätze werden gelöscht: </b>";
+	    
+	    foreach($data['rooms'] as $room){
+	        
+	        $data['response'] .= "</br> " . $room->teachers_ID . " " . $room->roomnumber;
+	        $deletelines++;
+	        
+	    }
+	    
+	    
+	    if($simulate!="on"){
+	        $this->EST_model->delete_alldata($this->tables_est['teacher_rooms']);
+	    }
+	    
+	    $data['response'] .= "</br><b> Es wurden " .  $deletelines . " Datensätze gelöscht! </b></br></br></br> ";
+	    
+	    
+	    $this->session->set_flashdata('message_rooms', $data['response']);
+	    redirect('auth', 'refresh');
+	}
 	
 	public function insert_csv_parents(){
 	    
@@ -417,6 +502,366 @@ class Auth extends CI_Controller {
 	    
 	}
 	
+	public function insert_csv_results(){
+	    
+	    if (!$this->ion_auth->logged_in() || (!$this->ion_auth->is_admin() && !($this->ion_auth->user()->row()->id == $id)))
+	    {
+	        redirect('auth', 'refresh');
+	    }
+	    
+	    $data = array();
+	    
+
+	    if(!empty($_FILES['file']['name'])){
+	        
+	        // set Checkboxes
+	        $data['response'] = "";
+	        $simulate = $this->input->post('edit_simulate_teachers_results');
+	        $delete = $this->input->post('edit_delete_teachers_results');
+	        $headline = $this->input->post('edit_headline_teachers_results');
+	        
+	        
+	        $deletelines=0;
+	        
+	        if($simulate=="on"){
+	            $data['response'] .= "<h3><b>SIMULATION des Imports !!! </b></h3></br>";
+	            
+	        }
+	        
+	       
+	        // delete data
+	        
+	        if($delete=="on"){
+	            $data['parent_results'] = $this->EST_model->results(false,"parents")->result();
+	            
+	            $data['response'] .= "<b>Folgende Datensätze werden gelöscht: </b>";
+	            
+	            foreach($data['parent_results'] as $parent_result){
+	                
+	                $data['response'] .= "</br> " . $parent_result->id . " " . $parent_result->username . " " . $parent_result->surname . " " . $parent_result->Day . " " . $parent_result->Time;
+	                $deletelines++;
+	                
+	            }
+	            
+	            
+	            if($simulate!="on"){
+	               $this->EST_model->delete_alldata($this->tables_est['parent_results']);
+	                
+	            }
+	            
+	            $data['response'] .= "</br><b> Es wurden " .  $deletelines . " Datensätze gelöscht! </b></br></br></br> ";
+	            
+	        }
+	        
+	        
+	        
+	        
+	        // Set preference
+	        $config['upload_path'] = 'assets/files/';
+	        $config['allowed_types'] = 'csv|txt';
+	        $config['max_size'] = '1000'; // max_size in kb
+	        $config['file_name'] = $_FILES['file']['name'];
+	        
+	        // Load upload library
+	        $this->load->library('upload',$config);
+	        
+	        // File upload
+	        if($this->upload->do_upload('file')){
+	            // Get data about the file
+	            $uploadData = $this->upload->data();
+	            $filename = $uploadData['file_name'];
+	            
+	            // Reading file
+	            $file = fopen("assets/files/".$filename,"r");
+	            $i = 0;
+	            
+	            $importData_arr = array();
+	            
+	            while (($filedata = fgetcsv($file, 1000, ";")) !== FALSE) {
+	                $num = count($filedata);
+	                //$filedata = array_map("utf8_encode", $filedata); //added
+	                
+	                for ($c=0; $c < $num; $c++) {
+	                    
+	                    $filedata [$c] = htmlspecialchars(html_entity_decode($filedata [$c], ENT_QUOTES, 'UTF-8'), ENT_QUOTES, 'UTF-8');
+	                    $importData_arr[$i][] = $filedata [$c];
+	                    
+	                }
+	                $i++;
+	            }
+	            fclose($file);
+	            unlink("assets/files/".$filename);
+	            
+	            // ignore first line
+	            if($headline=="on"){
+	                $skip = 0;
+	                $line = 0;
+	            }
+	            else{
+	                $skip = 1;
+	                $line = 1;
+	            }
+	            
+	            
+	            
+	            $data_imports = 0;
+	            
+	            // insert import data
+	            $data_import="";
+	            
+	            
+	            if($simulate!="on"){
+	                $this->ion_auth->db_trans_start();
+	            }
+	            
+	            
+	            foreach($importData_arr as $userdata){
+	                if($skip != 0){
+	                    
+	                    
+	                    //$userdata = explode(";", $userdata[0]);
+	                    if(isset($userdata[0]) && isset($userdata[1]) && isset($userdata[2]) && isset($userdata[3]) && is_numeric($userdata[0]) && $userdata[0]!="" && $userdata[1]!="" && $userdata[2]!="" && $userdata[3]!="" ){
+	                        
+	                        if($this->EST_model->check_parentresultsid(intval($userdata[0]),intval($userdata[1]))==null){
+	                            $data_import .= "</br> " . $line . ". Datensatz: " . $userdata[0] . " " . $userdata[1] . " " . $userdata[2] . " " . $userdata[3] . " <i class=\"icon fa fa-check\"></i>";
+	                            
+	                            if($simulate!="on"){
+	                                $result_data = array(
+	                                    'users_ID'   => $userdata[0],
+	                                    'teachers_ID'   => $userdata[1],
+	                                    'Day'   => $userdata[2],
+	                                    'Time'      => $userdata[3]
+	                                );
+	                                $this->EST_model->set_parents_results($result_data);
+	                            }
+	                            
+	                            $data_imports++;
+	                            }
+	                            else{
+	                                $data_import .= "</br> " . $line . ". Datensatz: " . $userdata[0] . " " . $userdata[1] . " " . $userdata[2] . " " . $userdata[3] . " - Fehler - ElternID  und LehrerID in dieser Kombination bereits vorhanden! <i class=\"icon fa fa-ban\" style=\"color:red;\"></i>";
+	                            }
+	                        
+	                        
+	                        
+	                    }
+	                    else{
+	                        $data_import .= "</br> " . $line . ". Datensatz: " . $userdata[0] . " " . $userdata[1] . " " . $userdata[2] . " " . $userdata[3] . " Fehler - Daten falsch oder unvollständig! <i class=\"icon fa fa-ban\" style=\"color:red;\"></i>";
+	                    }
+	                    
+	                    
+	                    
+	                }
+	                $skip ++;
+	                $line ++;
+	            }
+	            
+	         
+	            
+	    
+	            if($simulate!="on"){
+	                $this->ion_auth->db_trans_complete();
+	                
+	            }
+	     
+	            
+	            $data['response'] .= 'Aus der Datei <b>'.$filename . ' </b> wurden folgende Daten importiert: </br>';
+	            $data['response'] .= $data_import;
+	            $data['response'] .= '</br></br>'.$data_imports . ' Datensätze wurden importiert.';
+	            
+	        }else{
+	            $data['response'] .= 'Die Datei konnte nicht geladen werden.';
+	        }
+	       
+	    }else{
+	        $data['response'] .= 'Die Datei ist beschädigt oder leer.';
+	    }
+	    
+	    
+	    $this->session->set_flashdata('message_teachers_results', $data['response']);
+	    redirect('auth', 'refresh');
+	    
+	}
+	
+	
+	
+	public function insert_csv_rooms(){
+	    
+	    if (!$this->ion_auth->logged_in() || (!$this->ion_auth->is_admin() && !($this->ion_auth->user()->row()->id == $id)))
+	    {
+	        redirect('auth', 'refresh');
+	    }
+	    
+	    $data = array();
+	    
+	    
+	    if(!empty($_FILES['file']['name'])){
+	        
+	        // set Checkboxes
+	        $data['response'] = "";
+	        $simulate = $this->input->post('edit_simulate_rooms');
+	        $delete = $this->input->post('edit_delete_rooms');
+	        $headline = $this->input->post('edit_headline_rooms');
+	        
+	        
+	        $deletelines=0;
+	        
+	        if($simulate=="on"){
+	            $data['response'] .= "<h3><b>SIMULATION des Imports !!! </b></h3></br>";
+	            
+	        }
+	        
+	        
+	        // delete data
+	        
+	        if($delete=="on"){
+	            $data['rooms'] = $this->EST_model->getRooms()->result();
+	            
+	            $data['response'] .= "<b>Folgende Datensätze werden gelöscht: </b>";
+	            
+	            foreach($data['rooms'] as $room){
+	                
+	                $data['response'] .= "</br> " . $room->shortcode . " " . $room->surname . " " . $room->roomnumber;
+	                $deletelines++;
+	                
+	            }
+	            
+	            
+	            if($simulate!="on"){
+	                $this->EST_model->delete_alldata($this->tables_est['teacher_rooms']);
+	              
+	                
+	            }
+	            
+	            $data['response'] .= "</br><b> Es wurden " .  $deletelines . " Datensätze gelöscht! </b></br></br></br> ";
+	            
+	        }
+	        
+	        
+	        
+	        
+	        // Set preference
+	        $config['upload_path'] = 'assets/files/';
+	        $config['allowed_types'] = 'csv|txt';
+	        $config['max_size'] = '1000'; // max_size in kb
+	        $config['file_name'] = $_FILES['file']['name'];
+	        
+	        // Load upload library
+	        $this->load->library('upload',$config);
+	        
+	        // File upload
+	        if($this->upload->do_upload('file')){
+	            // Get data about the file
+	            $uploadData = $this->upload->data();
+	            $filename = $uploadData['file_name'];
+	            
+	            // Reading file
+	            $file = fopen("assets/files/".$filename,"r");
+	            $i = 0;
+	            
+	            $importData_arr = array();
+	            
+	            while (($filedata = fgetcsv($file, 1000, ";")) !== FALSE) {
+	                $num = count($filedata);
+	                //$filedata = array_map("utf8_encode", $filedata); //added
+	                
+	                for ($c=0; $c < $num; $c++) {
+	                    
+	                    $filedata [$c] = htmlspecialchars(html_entity_decode($filedata [$c], ENT_QUOTES, 'UTF-8'), ENT_QUOTES, 'UTF-8');
+	                    $importData_arr[$i][] = $filedata [$c];
+	                    
+	                }
+	                $i++;
+	            }
+	            fclose($file);
+	            unlink("assets/files/".$filename);
+	            
+	            // ignore first line
+	            if($headline=="on"){
+	                $skip = 0;
+	                $line = 0;
+	            }
+	            else{
+	                $skip = 1;
+	                $line = 1;
+	            }
+	            
+	            
+	            
+	            $data_imports = 0;
+	            
+	            // insert import data
+	            $data_import="";
+	            
+	            
+	            if($simulate!="on"){
+	                $this->ion_auth->db_trans_start();
+	            }
+	            
+	            
+	            foreach($importData_arr as $userdata){
+	                if($skip != 0){
+	                    
+	                    
+	                    //$userdata = explode(";", $userdata[0]);
+	                    if(isset($userdata[0]) && isset($userdata[1]) && is_numeric($userdata[0]) && $userdata[0]!="" && $userdata[1]!=""){
+	                        
+	                      if($this->EST_model->check_roomid(intval($userdata[0]))==null){
+	                        $data_import .= "</br> " . $line . ". Datensatz: " . $userdata[0] . " " . $userdata[1] . " <i class=\"icon fa fa-check\"></i>";
+	                        
+	                        if($simulate!="on"){
+	                            $result_data = array(
+	                                'teachers_ID'   => $userdata[0],
+	                                'roomnumber'   => $userdata[1]
+	                            );
+	                            $this->EST_model->set_rooms($result_data);
+	                        }
+	                        
+	                        $data_imports++;
+	                        
+	                        }
+	                        else{
+	                            $data_import .= "</br> " . $line . ". Datensatz: " . $userdata[0] . " " . $userdata[1] . " - Fehler - ID und Raumnummer bereits vorhanden! <i class=\"icon fa fa-ban\" style=\"color:red;\"></i>";
+	                        }
+	                        
+	                        
+	                    }
+	                    else{
+	                        $data_import .= "</br> " . $line . ". Datensatz: " . $userdata[0] . " " . $userdata[1]  . " Fehler - Daten falsch oder unvollständig! <i class=\"icon fa fa-ban\" style=\"color:red;\"></i>";
+	                    }
+	                    
+	                 
+	                    
+	                }
+	                $skip ++;
+	                $line ++;
+	            }
+	            
+	            
+	            
+	            
+	            if($simulate!="on"){
+	                $this->ion_auth->db_trans_complete();
+	                
+	            }
+	            
+	            
+	            $data['response'] .= 'Aus der Datei <b>'.$filename . ' </b> wurden folgende Daten importiert: </br>';
+	            $data['response'] .= $data_import;
+	            $data['response'] .= '</br></br>'.$data_imports . ' Datensätze wurden importiert.';
+	            
+	        }else{
+	            $data['response'] .= 'Die Datei konnte nicht geladen werden.';
+	        }
+	        
+	    }else{
+	        $data['response'] .= 'Die Datei ist beschädigt oder leer.';
+	    }
+	    
+	    
+	    $this->session->set_flashdata('message_rooms', $data['response']);
+	    redirect('auth', 'refresh');
+	    
+	}
 	
 	
 	public function insert_csv_teachers(){

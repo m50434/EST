@@ -51,6 +51,19 @@ class EST_model extends CI_Model {
 	    
 	}
 	
+	public function set_rooms($rooms_data){
+	    
+	    $this->db->insert($this->tables_est['teacher_rooms'], $rooms_data);
+	    
+	}
+	
+	
+	public function set_parents_results($result_data){
+	    
+	    $this->db->insert($this->tables_est['parent_results'], $result_data);
+	    
+	}
+	
 
 	
 	public function choices($id = False, $all = False){
@@ -119,6 +132,88 @@ class EST_model extends CI_Model {
 	}
 	
 	
+	public function getRooms(){
+	    
+	    
+	    $query = $this->db->select('*')
+	    ->join('teachers', 'teachers.ID = teachers_ID')
+	    ->get($this->tables_est['teacher_rooms']);
+	    //print_r($query);
+	    return $query;
+	    
+	}
+	
+	public function results($id = False, $all = False){
+	    
+	    if($all=="teacher")
+	    {
+
+	        
+	        $query = $this->db->select('*')
+	        ->join('teachers', 'teachers.ID = parent_results.teachers_ID')
+	        ->join('users', 'users.id = parent_results.users_ID')
+	        ->join('parent_choice', 'parent_choice.users_ID = parent_results.users_ID AND parent_choice.teachers_ID=parent_results.teachers_ID')
+	        ->join('rooms', 'teachers.ID = rooms.teachers_ID')
+	        ->order_by("Shortcode")
+	        ->order_by("Day")
+	        ->order_by("Time")
+	        ->get($this->tables_est['parent_results']);
+	        //print_r($query);
+	        return $query;
+	        
+	    }
+	    
+	    
+	    // result of parentresult!!
+	    if($all=="parents")
+	    {
+	        
+	        
+	        $query = $this->db->select('*')
+	        ->join('teachers', 'teachers.ID = parent_results.teachers_ID')
+	        ->join('users', 'users.id = parent_results.users_ID')
+	        ->join('parent_choice', 'parent_choice.users_ID = parent_results.users_ID AND parent_choice.teachers_ID=parent_results.teachers_ID')
+	        ->join('rooms', 'teachers.ID = rooms.teachers_ID')
+
+	        ->order_by("Time", "ASC")
+	        ->get($this->tables_est['parent_results']);
+	        //print_r($query);
+	        return $query;
+	        
+	    }
+	    
+	    
+	    // result of choices
+	    if($all=="parent")
+	    {
+	        $query = $this->db->select('*')
+	        ->join('teachers', 'teachers.ID = parent_choice.teachers_ID')
+	        ->join('users', 'users.ID = parent_choice.users_ID')
+	        ->join('parent_options', 'users.ID = parent_options.users_ID')
+	        ->order_by("users.username", "asc")
+	        ->order_by("parent_choice.Priority", "asc")
+	        ->order_by("teachers.shortcode", "asc")
+	        ->get($this->tables_est['parent_choice']);
+	        //print_r($query);
+	        return $query;
+	        
+	    }
+	    
+
+	    
+	    $query = $this->db->select('*')
+	    ->join('teachers', 'teachers.ID = parent_results.teachers_ID')
+	    ->join('rooms', 'teachers.ID = rooms.teachers_ID')
+	    ->join('parent_choice', 'parent_choice.users_ID = parent_results.users_ID AND parent_choice.teachers_ID=parent_results.teachers_ID')
+	    ->where('parent_results.users_ID', intval($id))
+	    ->order_by("Day")
+	    ->order_by("Time")
+	    ->get($this->tables_est['parent_results']);
+	    //print_r($query);
+	    return $query;
+	    
+	}
+	
 	
 	public function storeChoices($userid, $parentChoices, $parentOptions){
 	    
@@ -183,6 +278,22 @@ class EST_model extends CI_Model {
 	    $query = $this->db->select('*')
 	    ->where('ID', intval($id))
 	    ->get($this->tables_est['teachers']);
+	    return $query->result_array();
+	}
+	
+	public function check_roomid($id){
+	    $query = $this->db->select('*')
+	    ->where('teachers_id', intval($id))
+	    ->get($this->tables_est['teacher_rooms']);
+	    return $query->result_array();
+	}
+	
+	
+	public function check_parentresultsid($id, $id2){
+	    $query = $this->db->select('*')
+	    ->where('users_ID', intval($id))
+	    ->where('teachers_ID', intval($id2))
+	    ->get($this->tables_est['parent_results']);
 	    return $query->result_array();
 	}
 	

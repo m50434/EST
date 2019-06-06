@@ -68,7 +68,7 @@
 	
 
 
-    var table_teachers_auth = $('#table_teachers_auth').DataTable( {       
+    var table_rooms = $('#table_rooms').DataTable( {       
 
     	"sDom": 't<"bottom"i>',
         scrollCollapse: true,
@@ -81,9 +81,73 @@
         } );
 
 
+
+	$('#rooms_search').on( 'keyup', function () {
+		table_rooms.search( this.value ).draw();
+	} );
+
+	
+
+    var table_teachers_auth = $('#table_teachers_auth').DataTable( {       
+
+    	"sDom": 't<"bottom"i>',
+        scrollCollapse: true,
+        paging:         false,
+        deferRender:    true,
+        "language": {
+            "sInfo": "_TOTAL_ Einträge"
+            }
+        
+        } );
+
 	$('#teachers_search_auth').on( 'keyup', function () {
 	    table_teachers_auth.search( this.value ).draw();
 	} );
+
+    
+    var table_teachers_results_auth = $('#table_teachers_results_auth').DataTable( {       
+
+    	"sDom": 't<"bottom"i>',
+        scrollCollapse: true,
+        paging:         false,
+        orderFixed: [[0, 'asc']],
+        rowGroup: {
+            dataSrc: 1,
+            endRender: function ( rows, group ) {
+                var count = rows.count();
+ 
+               // return 'Anzahl der Gespräche: '+
+                //    count;
+                return $('<tr>')
+                .append( '<td style="text-align:right; background-color:#FFFFFF;" colspan="3">Anzahl der Gespräche: ' + count + '</td>')
+                .append('</tr>');
+            }
+        },
+        "columnDefs": [
+            {
+                "targets": [ 0 ],
+                "visible": false,
+                "searchable": false
+            },
+            {
+                "targets": [ 1 ],
+                "visible": false
+            }
+        ],
+        deferRender:    true,
+        "language": {
+            "sInfo": "_TOTAL_ Einträge"
+            }
+        
+        } );
+
+    
+
+	$('#teachers_results_search_auth').on( 'keyup', function () {
+		table_teachers_results_auth.search( this.value ).draw();
+	} );
+
+
 	
 
     var table_parents_choices = $('#table_parents_choices').DataTable( {       
@@ -125,6 +189,70 @@
 	} );
 
 
+/*
+ *         orderFixed: [[2, 'asc']],
+ rowGroup: {
+     dataSrc: 2,
+     endRender: function ( rows, group ) {
+         var count = rows.count();
+
+        // return 'Anzahl der Gespräche: '+
+         //    count;
+         return $('<tr>')
+         .append( '<td style="text-align:right; background-color:#FFFFFF;" colspan="4">Anzahl der Gespräche: ' + count + '</td>')
+         .append('</tr>');
+     }
+ },
+ "columnDefs": [
+
+     {
+         "targets": [ 2 ],
+         "visible": false
+     }
+ ],
+ */
+
+
+ var table_parents_results_auth = $('#table_parents_results_auth').DataTable( {       
+
+ 	"sDom": 't<"bottom"i>',
+     scrollCollapse: true,
+     paging:         false,
+     deferRender:    true,
+     orderFixed: [[2, 'asc']],
+     rowGroup: {
+         dataSrc: 2,
+         endRender: function ( rows, group ) {
+             var count = rows.count();
+
+            // return 'Anzahl der Gespräche: '+
+             //    count;
+             return $('<tr>')
+             .append( '<td style="text-align:right; background-color:#FFFFFF;" colspan="4">Anzahl der Gespräche: ' + count + '</td>')
+             .append('</tr>');
+         }
+     },
+     "columnDefs": [
+
+         {
+             "targets": [ 2 ],
+             "visible": false
+         }
+     ],
+     "language": {
+         "sInfo": "_TOTAL_ Einträge"
+         }
+     
+     } );
+
+
+
+	$('#parents_results_search_auth').on( 'keyup', function () {
+		table_parents_results_auth.search( this.value ).draw();
+	} );
+
+
+
 	
     $('#table_users').DataTable({
     	"sDom": 't<"bottom"i>',
@@ -145,6 +273,42 @@
                 "next":       "Nächste",
                 "previous":   "Vorherige"
             },
+        }
+    } );
+
+
+
+    $('#for_parent_result').DataTable({
+    	"sDom": 'Bt<"bottom"i>',
+        //scrollY:        350,
+        paging:         false,
+        buttons: [
+            'copy',
+            {
+                extend: 'pdf',
+                messageTop: "Ihre Gesprächstermine beim Elternsprechtag am MPG: ",
+                filename: "ESTamMPG",
+                title: "Elternsprechtag am MPG",
+                text: "PDF"
+            },
+            {
+                extend: 'print',
+                messageTop: "Ihre Gesprächstermine beim Elternsprechtag am MPG: ",
+                filename: "ESTamMPG",
+                title: "Elternsprechtag am MPG",
+                text: "Drucken"
+            }
+            
+        ],
+
+        deferRender:    true,
+        "language": {
+            "lengthMenu": "Zeige _MENU_ Einträge pro Seite",
+            "zeroRecords": "Keine Daten vorhanden",
+            "sInfo": "_TOTAL_ Gesprächstermine",
+            "infoEmpty": "Keine Daten vorhanden",
+            "infoFiltered": "",
+      
         }
     } );
     </script>

@@ -19,22 +19,41 @@ class Users extends CI_Controller {
 
 	// redirect if needed, otherwise display parents choice
 	public function index()
-	{
+	{   
 
 		if (!$this->ion_auth->logged_in())
 		{
 			// redirect them to the login page
 			redirect('auth/login', 'refresh');
 		}
+		
+		// load prefs
+		$this->data['prefs'] = $this->EST_model->load_prefs()->result(); //
+		
+		if($this->data['prefs'][0]->choice_on==0){
+		    
+		    $this->data['message_user'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message_user');
+		    
+		    $userx = $this->ion_auth->user()->row();
+		    
+		    $this->data['usersx'] = $userx;
+		    $this->data['parent_results'] = $this->EST_model->results($userx->id)->result();
+
+		    
+		    
+		    
+		    
+		    
+		    $this->_render_page('templates/header', $this->data);
+		    $this->_render_page('templates/navbar_users', $this->data);
+		    $this->_render_page('users/parent_result', $this->data);
+		    $this->_render_page('templates/footer');
+		   
+		    
+		}
 		else
 		{
-			// set the flash data error message if there is one
 			
-
-
-			
-			// load prefs
-			$this->data['prefs'] = $this->EST_model->load_prefs()->result(); // 
 			if($this->data['prefs'][0]->choice_on==0){
 			    //$this->session->set_flashdata('message_user', $this->config->item('no_choice', 'est'));
 			    $this->session->set_flashdata('message_user', 'Achtung: Sie können keine Veränderungen mehr speichern. Die Wahlzeit ist beendet.');
