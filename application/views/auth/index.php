@@ -11,8 +11,20 @@
     <a class="nav-link" data-toggle="tab" href="#parents_choice">Elternwahl</a>
   </li>
   
+  <li class="nav-item ">
+    <a class="nav-link" data-toggle="tab" href="#parents_results">Elternergebnisse</a>
+  </li>
+  
   <li class="nav-item">
     <a class="nav-link" data-toggle="tab" href="#teachers_choice">Lehrerwahl</a>
+  </li>
+  
+  <li class="nav-item">
+    <a class="nav-link" data-toggle="tab" href="#teachers_results">Lehrerergebnisse</a>
+  </li>
+  
+  <li class="nav-item">
+    <a class="nav-link" data-toggle="tab" href="#rooms">Raumdaten</a>
   </li>
   
   <li class="nav-item">
@@ -94,7 +106,7 @@
                 <div class="card text-white bg-danger mb-3">
                   <div class="card-body">
                     <h5 class="card-title">Daten löschen</h5>
-                    <p class="card-text">Achtung, es werden auch sämtliche Elternwahlen gelöscht.</p>
+                    <p class="card-text">Achtung, es werden auch sämtliche Elternwahlen und Elternergebnisse gelöscht.</p>
                                  <div class="custom-control custom-checkbox">
                                 <input type="checkbox" class="form-check-input" name="edit_simulate">
                                 <label class="form-check-label" >Löschen lediglich simulieren!</label>
@@ -210,7 +222,7 @@
                 <div class="card text-white bg-danger mb-3">
                   <div class="card-body">
                     <h5 class="card-title">Daten löschen</h5>
-                    <p class="card-text">Achtung, es werden auch sämtliche Elternwahlen gelöscht.</p>
+                    <p class="card-text">Achtung, es werden auch sämtliche Elternwahlen und Elternergebnisse gelöscht.</p>
                                  <div class="custom-control custom-checkbox">
                                 <input type="checkbox" class="form-check-input" name="edit_simulate_teachers">
                                 <label class="form-check-label" >Löschen lediglich simulieren!</label>
@@ -301,9 +313,10 @@
         	
         	
         	<?php 
+        	
         	if(!empty($parent_choices[0])){
         	foreach ($parent_choices as $choice):
-        	//print_r($choice[0]);
+        	//print_r($choice);
         	$teachers = "";
         	$option = "";
         	echo "<tr class=\"table-light\">
@@ -333,6 +346,98 @@
      	
 
   </div>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    <div class="tab-pane fade show" id="parents_results">
+        </br>
+
+
+     	<h3>Elternergebnisse</h3>
+        <p></p>
+      
+      
+	    <div id="edit_teachers"  class="row collapse">
+      
+
+           	<div class="col-12">
+           	<div class="alert alert-light alert-dismissable" id="infoMessage" role="alert">
+        
+            Hinweis: Das Importieren der Ergebnisse und Räume erfolgt über den Reiter "Lehrerergebnisse"!
+        	</div>
+              
+			</div>
+	
+      
+       
+      	
+        </div>
+
+   	<div class="row">
+           	<div class="col-10">
+	            <input class="form-control mr-sm-2" type="text" id="parents_results_search_auth" placeholder="Suche" style="max-width: 15rem;">
+            </div>
+
+            <div class="col-2">
+            <div class="float-sm-right">
+				<i data-toggle="collapse" data-target="#edit_teachers" class="fa fa-cog fa-2x"></i>
+			</div>
+           	</div>
+        </div>
+    
+                          <table id="table_parents_results_auth" class="table table-striped table-hover table-bordered" style="width:100%">
+                        	<thead>
+                        	<tr class="table-active">
+                        		<th>Kürzel</th>
+                        		<th>Lehrkraft</th>
+                        		<th>Eltern</th>
+                        		<th>Zeit</th>
+                        		<th>Raum</th>
+                        		
+                        	</tr>
+                        	<thead>
+                        	<tbody>
+                        	<?php // print_r($parents_results);?>
+                        	<?php foreach ($parents_results as $parent_result):
+                        	    ?>
+                        		
+                        		<tr class="table-light" id="<?php echo htmlspecialchars($parent_result->ID,ENT_QUOTES,'UTF-8');?>">
+                        		    <td class="shortcode"><?php echo htmlspecialchars(trim($parent_result->shortcode),ENT_QUOTES,'UTF-8');?></td>
+                                    <td class="surname"><?php echo (strcmp(trim($parent_result->gender),"m")==0 ? "Herr" : "Frau");?> <?php echo htmlspecialchars($parent_result->surname,ENT_QUOTES,'UTF-8');?></td>
+                                    <td><?php echo htmlspecialchars(trim($parent_result->username),ENT_QUOTES,'UTF-8');?></td>
+                                    <td><?php echo htmlspecialchars(trim($parent_result->Day),ENT_QUOTES,'UTF-8');?>, <?php echo htmlspecialchars(trim($parent_result->Time),ENT_QUOTES,'UTF-8');?></td>
+                                    <td><?php echo htmlspecialchars(trim($parent_result->roomnumber),ENT_QUOTES,'UTF-8');?> </td>
+                                  
+                        		</tr>
+                        	<?php endforeach;?>
+                        	</tbody>
+                        </table>
+        
+
+  </div>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
   
   <div class="tab-pane fade" id="teachers_choice">
     </br>
@@ -384,6 +489,255 @@
         </table>
         
   </div>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <div class="tab-pane fade show" id="teachers_results">
+        </br>
+        <?php if($message_teachers_results!="") echo "
+        <div class=\"alert alert-light alert-dismissable\" id=\"infoMessage\" role=\"alert\">
+        <button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">X</button>
+            $message_teachers_results
+        </div>";
+        ?> 
+
+     	<h3>Lehrerergebnisse</h3>
+        <p></p>
+      
+      
+	    <div id="edit_teachers_results"  class="row collapse">
+      
+ 
+              <div class="col-sm-6">
+                <div class="card text-white bg-info mb-3">
+                  <div class="card-body">
+                    <h5 class="card-title">Ergebnisdaten importieren</h5>
+                    <p class="card-text">
+                    		<p>
+                    		Bitte darauf achten, dass bereits Raumdaten importiert sind !!! </br>
+                    		Die CSV-Datei muss folgendem Aufbau entsprechen: </p>
+                    		<p class="font-italic">ElternID; LehrerID; Datum; Zeit</p>
+                                  	    <?php echo form_open_multipart('auth/insert_csv_results');?>
+             
+                            
+                            <label class="btn btn-secondary btn-sm" for="my-file-selector_teacher_results">
+                                <input id="my-file-selector_teacher_results" name="file" type="file" style="display:none" 
+                                onchange="$('#upload-file-info_teacher_results').html(this.files[0].name)">
+                                Datei auswählen
+                            </label>
+                			 <span class='label label-info' id="upload-file-info_teacher_results"></span></br>
+                     
+                                 <div class="custom-control custom-checkbox">       
+                    			<input type="checkbox" class="form-check-input" name="edit_headline_teachers_results">
+                                <label class="form-check-label" >Kopfzeile ignorieren</label>
+                                </div>
+                                <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="form-check-input" name="edit_delete_teachers_results">
+                                <label class="form-check-label" >Vorhandene Daten löschen</label>
+                                </div>
+                                
+                                <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="form-check-input" name="edit_simulate_teachers_results">
+                                <label class="form-check-label" >Import lediglich simulieren</label>
+                                </div>
+
+                    </p>
+                    <input class="float-right btn btn-primary btn-sm" type="submit" value="Daten hochladen" />
+                       </form>	
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6">
+              <?php echo form_open('auth/delete_teachers_results');?>
+                <div class="card text-white bg-danger mb-3">
+                  <div class="card-body">
+                    <h5 class="card-title">Daten löschen</h5>
+                    <p class="card-text">Achtung, es werdensämtliche Gesprächstermine gelöscht.</p>
+                                 <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="form-check-input" name="edit_simulate_teachers_results">
+                                <label class="form-check-label" >Löschen lediglich simulieren!</label>
+                                </div>                   
+                    <input class="float-right btn btn-primary btn-sm" type="submit" value="Ja, ich will das wirklich." />
+                  </form>
+                  </div>
+                </div>
+              </div>
+
+       
+      	
+        </div>
+
+   	<div class="row">
+           	<div class="col-10">
+	            <input class="form-control mr-sm-2" type="text" id="teachers_results_search_auth" placeholder="Suche" style="max-width: 15rem;">
+            </div>
+
+            <div class="col-2">
+            <div class="float-sm-right">
+				<i data-toggle="collapse" data-target="#edit_teachers_results" class="fa fa-cog fa-2x"></i>
+			</div>
+           	</div>
+        </div>
+    
+                          <table id="table_teachers_results_auth" class="table table-striped table-hover table-bordered" style="width:100%">
+                        	<thead>
+                        	<tr class="table-active">
+                        		<th>Kürzel</th>
+                        		<th>Lehrkraft</th>
+                        		<th>Eltern</th>
+                        		<th>Zeit</th>
+                        		<th>Raum</th>
+                        		
+                        	</tr>
+                        	<thead>
+                        	<tbody>
+                        	<?php // print_r($teachers_results);?>
+                        	<?php foreach ($teachers_results as $teacher_result):
+                        	    ?>
+                        		
+                        		<tr class="teacher_tr table-light" id="<?php echo htmlspecialchars($teacher_result->ID,ENT_QUOTES,'UTF-8');?>">
+                        		    <td class="shortcode"><?php echo htmlspecialchars(trim($teacher_result->shortcode),ENT_QUOTES,'UTF-8');?></td>
+                                    <td class="surname"><?php echo (strcmp(trim($teacher_result->gender),"m")==0 ? "Herr" : "Frau");?> <?php echo htmlspecialchars($teacher_result->surname,ENT_QUOTES,'UTF-8');?></td>
+                                    <td><?php echo htmlspecialchars(trim($teacher_result->username),ENT_QUOTES,'UTF-8');?></td>
+                                    <td><?php echo htmlspecialchars(trim($teacher_result->Day),ENT_QUOTES,'UTF-8');?>, <?php echo htmlspecialchars(trim($teacher_result->Time),ENT_QUOTES,'UTF-8');?></td>
+                                    <td><?php echo htmlspecialchars(trim($teacher_result->roomnumber),ENT_QUOTES,'UTF-8');?> </td>
+                                  
+                        		</tr>
+                        	<?php endforeach;?>
+                        	</tbody>
+                        </table>
+        
+
+  </div>
+  
+  
+  
+  
+  
+  
+  
+          <div class="tab-pane fade show" id="rooms">
+        </br>
+        <?php if($message_rooms!="") echo "
+        <div class=\"alert alert-light alert-dismissable\" id=\"infoMessage\" role=\"alert\">
+        <button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">X</button>
+            $message_rooms
+        </div>";
+        ?> 
+
+     	<h3>Raumdaten</h3>
+        <p></p>
+      
+      
+	    <div id="edit_rooms"  class="row collapse">
+      
+ 
+              <div class="col-sm-6">
+                <div class="card text-white bg-info mb-3">
+                  <div class="card-body">
+                    <h5 class="card-title">Raumdaten importieren</h5>
+                    <p class="card-text">
+                    		<p>Die CSV-Datei muss folgendem Aufbau entsprechen: </p>
+                    		<p class="font-italic">LehrerID; Raum</p>
+                                  	    <?php echo form_open_multipart('auth/insert_csv_rooms');?>
+             
+                            
+                            <label class="btn btn-secondary btn-sm" for="my-file-selector_rooms">
+                                <input id="my-file-selector_rooms" name="file" type="file" style="display:none" 
+                                onchange="$('#upload-file-info_rooms').html(this.files[0].name)">
+                                Datei auswählen
+                            </label>
+                			 <span class='label label-info' id="upload-file-info_rooms"></span></br>
+                     
+                                 <div class="custom-control custom-checkbox">       
+                    			<input type="checkbox" class="form-check-input" name="edit_headline_rooms">
+                                <label class="form-check-label" >Kopfzeile ignorieren</label>
+                                </div>
+                                <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="form-check-input" name="edit_delete_rooms">
+                                <label class="form-check-label" >Vorhandene Daten löschen</label>
+                                </div>
+                                
+                                <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="form-check-input" name="edit_simulate_rooms">
+                                <label class="form-check-label" >Import lediglich simulieren</label>
+                                </div>
+
+                    </p>
+                    <input class="float-right btn btn-primary btn-sm" type="submit" value="Daten hochladen" />
+                       </form>	
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6">
+              <?php echo form_open('auth/delete_rooms');?>
+                <div class="card text-white bg-danger mb-3">
+                  <div class="card-body">
+                    <h5 class="card-title">Daten löschen</h5>
+                    <p class="card-text">Achtung, es werden sämtliche Raumdaten gelöscht.</p>
+                                 <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="form-check-input" name="edit_simulate_rooms">
+                                <label class="form-check-label" >Löschen lediglich simulieren!</label>
+                                </div>                   
+                    <input class="float-right btn btn-primary btn-sm" type="submit" value="Ja, ich will das wirklich." />
+                  </form>
+                  </div>
+                </div>
+              </div>
+
+      
+       
+      	
+        </div>
+     	<div class="row">
+           	<div class="col-10">
+	            <input class="form-control mr-sm-2" type="text" id="rooms_search" placeholder="Suche" style="max-width: 15rem;">
+            </div>
+
+            <div class="col-2">
+            <div class="float-sm-right">
+				<i data-toggle="collapse" data-target="#edit_rooms" class="fa fa-cog fa-2x"></i>
+			</div>
+           	</div>
+        </div>
+    
+                          <table id="table_rooms" class="table table-striped table-hover table-bordered" style="width:100%">
+                        	<thead>
+                        	<tr class="table-active">
+								<th>Kürzel</th>
+                        		<th>Lehrkraft</th>
+                        		<th>Raumnummer</th>
+                        		
+                        	</tr>
+                        	<thead>
+                        	<tbody>
+                        	<?php // print_r($teachers_results);?>
+                        	<?php foreach ($rooms as $room):
+                        	    ?>
+                        		
+                        		<tr class="teacher_tr table-light">
+                        		    <td class="shortcode"><?php echo htmlspecialchars(trim($room->shortcode),ENT_QUOTES,'UTF-8');?></td>
+                        		    <td class="shortcode"><?php echo htmlspecialchars(trim($room->surname),ENT_QUOTES,'UTF-8');?></td>
+                                    <td><?php echo htmlspecialchars(trim($room->roomnumber),ENT_QUOTES,'UTF-8');?></td>
+                                 
+                        		</tr>
+                        	<?php endforeach;?>
+                        	</tbody>
+                        </table>
+        
+
+  </div>
+  
+  
+  
+  
   
   
     <div class="tab-pane fade" id="users">
@@ -566,9 +920,9 @@
                               </p>
                       </div>
                       
-                    </div>  
+                       </div>  
                     
-                    
+                
                    <div class="card border-light mb-3">
                       <div class="card-header">Datum 1, Datum 2 des Elternsprechtages</div>
                       <div class="card-body">
@@ -578,13 +932,13 @@
                               </p>
                       </div>
                       
-                    </div>  
-                    
+                    </div>
+                      
                     	
                     <div class="card border-light mb-3">
                       <div class="card-header">Wählbare Optionen</div>
                       <div class="card-body">
-                              <p>
+                               <p>
                                      <?php echo form_input('option1',$prefs[0]->option1,'class="form-control"');?>
                                      <?php echo form_input('option2',$prefs[0]->option2,'class="form-control"');?>
                                      <?php echo form_input('option3',$prefs[0]->option3,'class="form-control"');?>

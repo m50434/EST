@@ -152,7 +152,7 @@ class EST_model extends CI_Model {
 	        $query = $this->db->select('*')
 	        ->join('teachers', 'teachers.ID = parent_results.teachers_ID')
 	        ->join('users', 'users.id = parent_results.users_ID')
-	        ->join('parent_choice', 'parent_choice.users_ID = parent_results.users_ID AND parent_choice.teachers_ID=parent_results.teachers_ID')
+	        //->join('parent_choice', 'parent_choice.users_ID = parent_results.users_ID AND parent_choice.teachers_ID=parent_results.teachers_ID')
 	        ->join('rooms', 'teachers.ID = rooms.teachers_ID')
 	        ->order_by("Shortcode")
 	        ->order_by("Day")
@@ -172,7 +172,7 @@ class EST_model extends CI_Model {
 	        $query = $this->db->select('*')
 	        ->join('teachers', 'teachers.ID = parent_results.teachers_ID')
 	        ->join('users', 'users.id = parent_results.users_ID')
-	        ->join('parent_choice', 'parent_choice.users_ID = parent_results.users_ID AND parent_choice.teachers_ID=parent_results.teachers_ID')
+	        //->join('parent_choice', 'parent_choice.users_ID = parent_results.users_ID AND parent_choice.teachers_ID=parent_results.teachers_ID')
 	        ->join('rooms', 'teachers.ID = rooms.teachers_ID')
 
 	        ->order_by("Time", "ASC")
