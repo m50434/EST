@@ -200,7 +200,7 @@ class EST_model extends CI_Model {
 	    }
 	    
 
-	    
+	    // result for users
 	    $query = $this->db->select('*')
 	    ->join('teachers', 'teachers.ID = parent_results.teachers_ID')
 	    ->join('rooms', 'teachers.ID = rooms.teachers_ID')

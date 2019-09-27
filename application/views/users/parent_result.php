@@ -58,7 +58,7 @@
                 	<tr class="table-light">
                 		<th>Lehrkraft</th>
                 		<th>Kürzel</th>
-                		<th>Priorität</th>
+                		<!-- <th>Priorität</th>-->
                 		<th>Termin</th>
                 		<th>Raum</th>
 
@@ -66,12 +66,13 @@
                 	</tr>
                 	<thead>
                 	<tbody>
+
 					<?php foreach ($parent_results as $result):?>
 					
 					<tr class="teacher_tr t_tr<?php echo htmlspecialchars($result->ID,ENT_QUOTES,'UTF-8');?>  id="<?php echo htmlspecialchars($result->ID,ENT_QUOTES,'UTF-8');?>">
 					        <td><?php echo (strcmp(trim($result->gender),"m")==0 ? "Herr" : "Frau");?> <?php echo htmlspecialchars($result->surname,ENT_QUOTES,'UTF-8');?></td>
                             <td><?php echo htmlspecialchars($result->shortcode,ENT_QUOTES,'UTF-8');?></td>
-                            <td><?php echo htmlspecialchars($result->Priority,ENT_QUOTES,'UTF-8');?></td>
+                            <!-- <td><?php echo htmlspecialchars($result->Priority,ENT_QUOTES,'UTF-8');?></td> -->
                             <td><?php echo htmlspecialchars($result->Day,ENT_QUOTES,'UTF-8');?>, <?php echo htmlspecialchars($result->Time,ENT_QUOTES,'UTF-8');?> Uhr</td>
                             <td><?php echo htmlspecialchars($result->roomnumber,ENT_QUOTES,'UTF-8');?></td>
 

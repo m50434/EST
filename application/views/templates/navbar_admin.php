@@ -1,7 +1,7 @@
 
 <nav class="navbar navbar-custom navbar-expand-lg navbar-dark nav-bg-color">
  <div class="container">
-  <div class="navbar-brand" ><?php echo $prefs[0]->school ?></div>
+  <div class="navbar-brand" ><strong><?php echo $prefs[0]->school ?></strong></div>
   
 
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor03" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">

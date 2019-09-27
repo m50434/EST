@@ -54,7 +54,7 @@ class Users extends CI_Controller {
 		else
 		{
 			
-			if($this->data['prefs'][0]->choice_on==0){
+			if($this->data['prefs'][0]->choice_on==0){ // no more choices available
 			    //$this->session->set_flashdata('message_user', $this->config->item('no_choice', 'est'));
 			    $this->session->set_flashdata('message_user', 'Achtung: Sie können keine Veränderungen mehr speichern. Die Wahlzeit ist beendet.');
 			}
