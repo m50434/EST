@@ -362,7 +362,7 @@
         deferRender:    true,
         "language": {
             "lengthMenu": "Zeige _MENU_ Einträge pro Seite",
-            "zeroRecords": "Keine Daten vorhanden",
+            "zeroRecords": "Keine Gesprächswünsche gewählt.",
             "sInfo": "_TOTAL_ Gesprächstermine",
             "infoEmpty": "Keine Daten vorhanden",
             "infoFiltered": "",

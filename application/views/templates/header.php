@@ -11,6 +11,7 @@
     <link href="<?php echo base_url('assets/css/bootstrap.min.css');?>" rel="stylesheet">
     
     <!-- <link href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" rel="stylesheet">  -->
+    <link href="<?php echo base_url('assets/css/fontawesome/all.css');?>" rel="stylesheet">
     
     <!--  <link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" rel="stylesheet">-->
     <link href="<?php echo base_url('assets/css/dataTables.bootstrap4.min.css');?>" rel="stylesheet">

@@ -29,6 +29,7 @@ Changelog and New Features
 | 1.3: Es können nun die tatsächlich stattfindenden Elterngespräche sowie die Raumdaten importiert werden. Außerdem können Eltern nun ihre Gespärchstermine einsehen und diese drucken bzw. als PDF herunterladen. Für Version 1.3 muss die neue Datenbank benutzt werden, da sich hier ebenfalls Änderungen ergeben haben.
 | 1.31: Fixes in db. PDF-Ausgabe der Elternergebnisse optimiert.
 | 1.32: Es kann die Elternwahl beendet werden ODER Elternergebnisse angezeigt werden.
+| 1.33: Some Fixes.
 
 
 
