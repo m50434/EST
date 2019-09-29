@@ -889,22 +889,27 @@
             <div class="col-md-6">        			
             
             		<div class="card border-light mb-3">
-                      <div class="card-header">Elternwahl</div>
+                      <div class="card-header">Elternwahl/Elternansicht</div>
                       <div class="card-body">
                       
                                 <?php
                                 $radio1 = "";
                                 $radio2 = "";
+                                $radio3 = "";
                        	    	if($prefs[0]->choice_on==1){
                        	    	    $radio1 = "checked";
-                       	    	}
+                               }
+                               else if($prefs[0]->choice_on==0){
+                                $radio2 = "checked";
+                              }
                        	    	else{
-                       	    	    $radio2 = "checked";
+                       	    	    $radio3 = "checked";
                        	    	}
                        	    	?>
 
                       		<label class="radio-inline"><input type="radio" name="choice_on" value="on" <?php echo $radio1;?>> aktiviert </label>
-							<label class="radio-inline"><input type="radio" name="choice_on" value="off" <?php echo $radio2;?>> deaktiviert </label>
+							            <label class="radio-inline"><input type="radio" name="choice_on" value="off" <?php echo $radio2;?>> deaktiviert </label>
+                          <label class="radio-inline"><input type="radio" name="choice_on" value="erg" <?php echo $radio3;?>> Ergebnisse anzeigen </label>
 
                       </div>
                     </div>

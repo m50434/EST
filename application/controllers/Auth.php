@@ -129,7 +129,8 @@ class Auth extends CI_Controller {
 	    
 	    
 	    if($this->input->post('choice_on')=="off")$temp=0;
-	    else $temp=1;
+		else if($this->input->post('choice_on')=="on")$temp=1;
+		else if($this->input->post('choice_on')=="erg")$temp=2;
 	    $data = array(
 	        'title'   => $this->input->post('title'),
 	        'school' => $this->input->post('school'),

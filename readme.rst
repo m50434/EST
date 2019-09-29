@@ -25,9 +25,11 @@ EST - Online
 Changelog and New Features
 **************************
 
-| 1.2: Bei den Lehrern k�nnen die Terminfelder beim Importieren nun auch leer sein.
+| 1.2: Bei den Lehrern können die Terminfelder beim Importieren nun auch leer sein.
 | 1.3: Es können nun die tatsächlich stattfindenden Elterngespräche sowie die Raumdaten importiert werden. Außerdem können Eltern nun ihre Gespärchstermine einsehen und diese drucken bzw. als PDF herunterladen. Für Version 1.3 muss die neue Datenbank benutzt werden, da sich hier ebenfalls Änderungen ergeben haben.
 | 1.31: Fixes in db. PDF-Ausgabe der Elternergebnisse optimiert.
+| 1.32: Es kann die Elternwahl beendet werden ODER Elternergebnisse angezeigt werden.
+
 
 
 *******************
@@ -45,7 +47,8 @@ EST-Online is based on CodeIgniter and SQLite.
 | SQLite:
 | You need to install/activate the extension "pdo_sqlite" in your PHP-Version!!!
 | Otherwise you cannot access the database!!!
-| 
+
+
 ************
 Installation
 ************
@@ -56,9 +59,9 @@ Installation
 |    change in line 26 the variable $config['base_url'] to 'https://yoururl.com/est/';
 |  
 
-************
+*******************************
 Update (nicht für 1.2 auf 1.3)
-************
+*******************************
 
 | 1. Logout from EST
 | 2. Copy EST.db in \assets\db

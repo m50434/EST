@@ -30,7 +30,7 @@ class Users extends CI_Controller {
 		// load prefs
 		$this->data['prefs'] = $this->EST_model->load_prefs()->result(); //
 		
-		if($this->data['prefs'][0]->choice_on==0){
+		if($this->data['prefs'][0]->choice_on==2){
 		    
 		    $this->data['message_user'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message_user');
 		    
@@ -39,11 +39,6 @@ class Users extends CI_Controller {
 		    $this->data['usersx'] = $userx;
 		    $this->data['parent_results'] = $this->EST_model->results($userx->id)->result();
 
-		    
-		    
-		    
-		    
-		    
 		    $this->_render_page('templates/header', $this->data);
 		    $this->_render_page('templates/navbar_users', $this->data);
 		    $this->_render_page('users/parent_result', $this->data);
