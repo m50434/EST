@@ -30,6 +30,8 @@ Changelog and New Features
 | 1.31: Fixes in db. PDF-Ausgabe der Elternergebnisse optimiert.
 | 1.32: Es kann die Elternwahl beendet werden ODER Elternergebnisse angezeigt werden.
 | 1.33: Some Fixes.
+| 1.34: Individueller Info-Text bei den Elternergebnissen darstellbar *neue Datenbankstruktur
+
 
 
 
@@ -61,7 +63,7 @@ Installation
 |  
 
 *******************************
-Update (nicht für 1.2 auf 1.3)
+Update (ab 1.34)
 *******************************
 
 | 1. Logout from EST

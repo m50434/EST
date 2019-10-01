@@ -44,7 +44,17 @@
   </div>
   <div class="card-body">
     
-
+		<div class="alert alert-dismissible alert-secondary" id="alertManual">
+			<div class="row"> <!-- add no-gutters to make it narrower -->
+			
+				<div class="col-auto align-self-start"> <!-- or align-self-center -->
+					<i class="fa-3x fa fa-info" aria-hidden="true"></i>
+				</div>
+				<div class="col">
+					<?php echo $prefs[0]->result_info; ?>
+				</div>
+			</div>
+		</div>
 
 
 

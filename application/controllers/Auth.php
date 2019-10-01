@@ -150,7 +150,8 @@ class Auth extends CI_Controller {
 	        'linknavbarcolor' => (strpos($this->input->post('linknavbarcolor'),"#")) ? $this->input->post('linknavbarcolor') : "#".$this->input->post('linknavbarcolor'),
 	        'datum1' => $this->input->post('datum1'),
 	        'datum2' => $this->input->post('datum2'),
-	        'manual' => $this->input->post('manual'),
+			'manual' => $this->input->post('manual'),
+			'result_info' => $this->input->post('result_info'),
 	    );
 	    
 	    $this->EST_model->set_prefs($data);

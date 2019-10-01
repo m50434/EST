@@ -881,6 +881,17 @@
                       </div>
                       
                     </div>  	
+
+
+                    <div class="card border-light mb-3">
+                      <div class="card-header">Hinweis zu Ergebnissen</div>
+                      <div class="card-body">
+                              <p>
+                                     <?php echo form_textarea('result_info',$prefs[0]->result_info,'class="form-control"');?>
+                              </p>
+                      </div>
+                      
+                    </div>  
    		
             </div>
             
