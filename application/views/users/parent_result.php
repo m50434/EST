@@ -60,8 +60,9 @@
 
         <div class="row">
 
-        	   <div class="col-sm-12 ">
-        	   
+        	 
+			<div class="col-sm-12 ">
+			   <div class="d-none d-sm-block">	
         	    <table id="for_parent_result" class="table table-striped table-hover table-bordered" style="width:100%">
         		
                 	<thead>
@@ -90,7 +91,34 @@
                 		
 					<?php endforeach;?>
 					</tbody>
-					</table>	
+					</table>
+				</div>	
+
+
+				 <!-- Für Smartphones -->
+			   <div class="d-block d-sm-none">
+        	    <table id="for_parent_result_mobile" class="table table-striped table-hover table-bordered" style="width:100%">
+        		
+                	<thead>
+                	<tr class="table-light">
+                		<th>Gesprächsdaten:</th>
+                	</tr>
+                	<thead>
+                	<tbody>
+
+					<?php foreach ($parent_results as $result):?>
+					
+					<tr class="teacher_tr t_tr<?php echo htmlspecialchars($result->ID,ENT_QUOTES,'UTF-8');?>  id="<?php echo htmlspecialchars($result->ID,ENT_QUOTES,'UTF-8');?>">
+					        <td>
+							Lehrkraft: <?php echo (strcmp(trim($result->gender),"m")==0 ? "Herr" : "Frau");?> <?php echo htmlspecialchars($result->surname,ENT_QUOTES,'UTF-8');?> (<?php echo htmlspecialchars($result->shortcode,ENT_QUOTES,'UTF-8');?>) <br> <?php echo htmlspecialchars($result->Day,ENT_QUOTES,'UTF-8');?>, <?php echo htmlspecialchars($result->Time,ENT_QUOTES,'UTF-8');?> Uhr in Raum <?php echo htmlspecialchars($result->roomnumber,ENT_QUOTES,'UTF-8');?>
+							
+							</td>
+                	</tr>
+                		
+					<?php endforeach;?>
+					</tbody>
+					</table>
+				</div>	
         	   </div>
         	
 			

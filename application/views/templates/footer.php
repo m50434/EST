@@ -254,6 +254,119 @@
         }
     } );
 
+	$('#for_parent_result_mobile').DataTable({
+    	"sDom": 'Bt<"bottom"i>',
+		"ordering": false,
+		//scrollY:        350,
+        paging:         false,
+        buttons: [
+            'copy',
+            {
+                extend: 'pdf',
+                messageTop: "Ihre Gesprächstermine beim Elternsprechtag am MPG: ",
+				filename: "ESTamMPG",
+				customize: function (doc) {
+						//Remove the title created by datatTables
+						doc.content.splice(0,1);
+						//Create a date string that we use in the footer. Format is dd-mm-yyyy
+						var now = new Date();
+						var jsDate = now.getDate()+'.'+(now.getMonth()+1)+'.'+now.getFullYear();
+						var school = '<?php echo $prefs[0]->school;?>';
+					
+						// margin: [left, top, right, bottom]
+						doc.pageMargins = [40,110,20,30];
+						// Set the font size fot the entire document
+						doc.defaultStyle.fontSize = 12;
+						// Set the fontsize for the table header
+						doc.styles.tableHeader.fontSize = 12;
+
+						doc.styles.tableHeader = {
+						color: 'black',
+						bold:!0,
+						fillColor: '#cccccc',
+                        alignment: 'left'
+                	    },
+						doc['header']=(function() {
+							return {
+								columns: [
+									{
+										alignment: 'left',
+										italics: true,
+										text: 'Elternsprechtag',
+										fontSize: 18,
+
+									},
+
+									{
+										alignment: 'right',
+										fontSize: 14,
+										text: school
+									}
+								],
+								margin: 40
+							}
+						});
+						// Create a footer object with 2 columns
+						// Left side: report creation date
+						// Right side: current page and total pages
+						doc['footer']=(function(page, pages) {
+							return {
+								columns: [
+									{
+										alignment: 'left',
+										text: ['Erstellt: ', { text: jsDate.toString() }]
+									},
+									{
+										alignment: 'right',
+										text: ['Seite ', { text: page.toString() },	' von ',	{ text: pages.toString() }]
+									}
+								],
+								// margin: [left, top, right, bottom]
+								margin: [ 20, 2, 20, 50 ]
+							}
+						});
+
+						      // Styling the table: create style object
+							  var objLayout = {};
+							// Horizontal line thickness
+							objLayout['hLineWidth'] = function(i) { return .5; };
+							// Vertikal line thickness
+							objLayout['vLineWidth'] = function(i) { return .5; };
+							// Horizontal line color
+							objLayout['hLineColor'] = function(i) { return '#aaa'; };
+							// Vertical line color
+							objLayout['vLineColor'] = function(i) { return '#aaa'; };
+							// Left padding of the cell
+							objLayout['paddingLeft'] = function(i) { return 24; };
+							// Right padding of the cell
+							objLayout['paddingRight'] = function(i) { return 24; };
+							// Inject the object in the document
+							doc.content[1].layout = objLayout;
+
+				},
+                title: "Elternsprechtag am MPG",
+                text: "PDF"
+            },
+            {
+                extend: 'print',
+				messageTop: "Ihre Gesprächstermine beim Elternsprechtag am MPG: ",
+                filename: "ESTamMPG",
+                title: "Elternsprechtag am MPG",
+                text: "Drucken"
+            }
+            
+        ],
+
+        deferRender:    true,
+        "language": {
+            "lengthMenu": "Zeige _MENU_ Einträge pro Seite",
+            "zeroRecords": "Keine Gesprächswünsche gewählt.",
+            "sInfo": "_TOTAL_ Gesprächstermine",
+            "infoEmpty": "Keine Daten vorhanden",
+            "infoFiltered": "",
+      
+        }
+    } );
 
 
     $('#for_parent_result').DataTable({
