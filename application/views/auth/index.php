@@ -34,6 +34,10 @@
   <li class="nav-item">
     <a class="nav-link" data-toggle="tab" href="#prefs">Einstellungen</a>
   </li>
+  
+  <li class="nav-item">
+    <a class="nav-link" data-toggle="tab" href="#simulation">Simulation</a>
+  </li>
 
 </ul>
 <div id="myTabContent" class="tab-content">
@@ -964,6 +968,12 @@
                               </p>
                       </div>
                     </div>
+					
+					
+		
+					
+					
+
 
             </div>
     		</div>
@@ -977,7 +987,62 @@
     		</div>
    
 
+
+
+
   </div>
+  
+  
+    <div class="tab-pane fade" id="simulation">
+   
+   		</br>  
+   		
+   		<?php if($message_simulate!="") echo "
+        <div class=\"alert alert-success alert-dismissable\" id=\"infoMessage\" role=\"alert\">
+        <button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\"><p class=\"text-secondary\">X</p></button>
+            $message_simulate
+        </div>";
+        ?> 
+   		
+   		
+     	<h3>Simulation</h3>
+        <p></p>
+
+		<div class="row">
+        <div class="col-md-12">
+		
+					<div class="card border-light mb-3">
+                      <div class="card-header">Elternwahlen simulieren</div>
+                      <div class="card-body">
+                               	<?php echo form_open('auth/simulate_choices');?>
+							
+								
+							
+													
+											<p> Anzahl simulierter Wünsche (<b>!!!ACHTUNG!!! - ES WERDEN ALLE BISHERIGEN WÜNSCHE GELÖSCHT</b>)</p>
+											<?php echo form_input('simulateChoicesCounts',500,'id="simulateChoicesCounts" class="form-control"');?>
+												
+										<br>												
+									<input class="float-right btn btn-primary btn-sm" type="submit" value="Simulieren!" />
+								  </form>
+								 
+								
+                      </div>
+                    </div>
+        
+        </div>
+    	</div>
+   
+
+
+
+
+  </div>
+  
+  
+  		
+  
+  
   
 </div>
 

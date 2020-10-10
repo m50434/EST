@@ -38,6 +38,7 @@ class Auth extends CI_Controller {
 			$this->data['message_teachers'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message_teachers');
 			$this->data['message_rooms'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message_rooms');
 			$this->data['message_prefs'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message_prefs');
+			$this->data['message_simulate'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message_simulate');
 
 			
 			// load prefs
@@ -1049,6 +1050,85 @@ class Auth extends CI_Controller {
 	    
 	}
 	
+
+	public function simulate_choices(){
+	    
+	    if (!$this->ion_auth->logged_in() || (!$this->ion_auth->is_admin() && !($this->ion_auth->user()->row()->id == $id)))
+	    {
+	        redirect('auth', 'refresh');
+	    }
+	    
+		$this->EST_model->delete_alldata($this->tables_est['parent_choice']);
+		$this->EST_model->delete_alldata($this->tables_est['parent_options']);
+		
+	    $data_choices = array();
+	    $simulateChoicesCounts = $this->input->post('simulateChoicesCounts');
+		
+		
+		$data_simulate['response'] = "<b>Es wurden " . $simulateChoicesCounts . " Fälle in die Datenbank geschrieben!";
+		
+		
+		$teachers = $this->EST_model->teachers()->result_array();
+		$parents = $this->EST_model->parents()->result_array();
+		$teachers_array = array();
+		    foreach ($teachers as $teacher){
+				array_push($teachers_array, $teacher["ID"]);
+			
+
+	    }
+		$parents_array = array();
+		    foreach ($parents as $parent){
+				if($parent["id"]!=-1)
+				array_push($parents_array, $parent["id"]);
+			
+
+	    }
+
+		$this->EST_model->db_trans_start();
+		$data_insert = "";
+		$j=1;
+		while ($j <= $simulateChoicesCounts) {
+			
+			$randomparent = array_rand($parents_array);
+			$parentid = 
+			$teachers_array_tmp = $teachers_array;
+			
+			for ($i = 1; $i <= rand(1, 7); $i++) {
+				
+					$randomteacher = array_rand($teachers_array_tmp);
+					$data_choices = array(
+								'users_ID'   => $parents_array[$randomparent],
+								'teachers_ID'   => $teachers_array_tmp[$randomteacher],
+								'Priority'   => $i
+							);
+					
+					$this->EST_model->simulate_partenchoice($data_choices);	
+					$data_insert .= "</br> " . $j . ". ParentID: " . $parents_array[$randomparent] . " TeacherID: " . $teachers_array_tmp[$randomteacher] . " Priority: " . $i;
+					unset($teachers_array_tmp[$randomteacher]);							
+					$j++; 
+			}
+			
+			
+			
+			// store options
+			$this->db->set('users_ID', $parents_array[$randomparent]);
+			$this->db->set('options', "");
+			$this->db->insert($this->tables_est['parent_options']);
+			
+			unset($parents_array[$randomparent]);
+
+						
+			 
+
+		}
+		$this->EST_model->db_trans_complete();
+		$data_simulate['response'] .= $data_insert;
+		$this->session->set_flashdata('message_simulate', $data_simulate['response']);
+	    redirect('auth', 'refresh');
+	    
+	}
+
+
 	
 	// Export data in CSV format
 	public function exportCSV($table="choices"){

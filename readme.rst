@@ -33,6 +33,7 @@ Changelog and New Features
 | 1.34: Individueller Info-Text bei den Elternergebnissen darstellbar, neue Datenbankstruktur
 | 1.35: Eleternergebnisse-Ansicht für kleine Bildschirme optimiert
 | 1.36: Fehlenden Ordner Files hinzugefügt
+| 1.37: Simulation von Elternwünschen in beliebiger Anzahl hinzugefügt
 
 
 

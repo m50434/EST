@@ -43,6 +43,13 @@ class EST_model extends CI_Model {
 		
 	}
 	
+	public function parents(){
+		
+
+		    return $this->db->get($this->tables_est['users']);
+		
+	}
+	
 	
 	
 	public function set_teacher($teacher_data){
@@ -64,6 +71,12 @@ class EST_model extends CI_Model {
 	    
 	}
 	
+
+	public function simulate_partenchoice($data_choices){
+	    
+	    $this->db->insert($this->tables_est['parent_choice'], $data_choices);
+	
+	}
 
 	
 	public function choices($id = False, $all = False){
@@ -307,6 +320,14 @@ class EST_model extends CI_Model {
 	    $query = $this->db->select('*')
 	    ->get($this->tables_est['prefs']);
 	    return $query;
+	}
+	
+	public function db_trans_complete(){
+	    $this->db->trans_complete();
+	}
+	
+    public function db_trans_start(){
+	    $this->db->trans_start();
 	}
 	
 
